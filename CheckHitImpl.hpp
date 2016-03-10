@@ -39,13 +39,14 @@ namespace CheckHit
 		}
 
 		namespace HELPER{
-			using std::pow;
 			template<typename T1, typename T2>
 			//2点間の距離の二乗
 			inline auto Dist2(const Object_Dot<T1>& Dot1, const Object_Dot<T2>& Dot2)
-				->decltype(pow(Dot2.x - Dot1.x, 2) + pow(Dot2.y - Dot1.y, 2))
+				->decltype((Dot2.x - Dot1.x)*(Dot2.x - Dot1.x) + (Dot2.y - Dot1.y)*(Dot2.y - Dot1.y))
 			{
-				return (pow(Dot2.x - Dot1.x, 2) + pow(Dot2.y - Dot1.y, 2));
+				auto diff_x = (Dot2.x - Dot1.x);
+				auto diff_y = (Dot2.y - Dot1.y);
+				return diff_x*diff_x + diff_y*diff_y;
 			}
 		}
 		using HELPER::Dist2;
@@ -186,10 +187,9 @@ namespace CheckHit
 		auto R2 = Cir.r*Cir.r;
 
 #if 1//オーバーフローしないように工夫する
-		auto Cross_L_BR = abs((Line.x2 - Line.x1)*(Line_BR.y2 - Line_BR.y1) - (Line_BR.x2 - Line_BR.x1)*(Line.y2 - Line.y1));
-		Cross_L_BR = abs(Cross(Line, Line_BR));
+		auto Cross_L_BR = abs(Cross(Line, Line_BR));
 		//直線Line、円Cirの中心間の距離が半径以下
-		if (R2 / Cross_L_BR >=
+		if ((Cross_L_BR == 0) || R2 / Cross_L_BR >=
 			(Cross_L_BR / Dist2(Line_begin, Line_end))
 			)
 		{
