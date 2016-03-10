@@ -27,3 +27,8 @@
 *.out
 *.app
 Test/Debug/
+Test/Win32Project1.sdf
+Test/Log.txt
+Test/Win32Project1.vcxproj.user
+Test/ipch/win32project1-9474d628/win32project1-12840cc7.ipch
+Test/Win32Project1.v12.suo
